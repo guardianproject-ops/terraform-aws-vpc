@@ -42,7 +42,9 @@
 # terraform-aws-vpc
 
 
-This is a terraform module that creates a vpc and public and private subnets with optional nat instances or gateways.
+
+This is a terraform module that creates a vpc and public and private subnets
+with optional nat instances or gateways.
 
 
 ---
@@ -65,7 +67,10 @@ It's free and open source made available under the the [APACHE2](LICENSE.md).
 ## Introduction
 
 
-The VPC submodule is based off of Cloudposse's  [vpc](https://github.com/cloudposse/terraform-aws-vpc) module.
+The VPC, nat-gateway, and nat-instance submodules are based off of
+Cloudposse's  [vpc](https://github.com/cloudposse/terraform-aws-vpc)  and
+[dynamic-subnets](https://github.com/cloudposse/terraform-aws-dynamic-subnets)
+modules.
 
 
 

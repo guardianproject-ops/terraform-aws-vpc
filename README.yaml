@@ -18,12 +18,16 @@ badges: []
 
 # Short description of this project
 description: |-
-  This is a terraform module that creates a vpc and public and private subnets with optional nat instances or gateways.
 
+  This is a terraform module that creates a vpc and public and private subnets
+  with optional nat instances or gateways.
 
 introduction: |-
 
-  The VPC submodule is based off of Cloudposse's  [vpc](https://github.com/cloudposse/terraform-aws-vpc) module.
+  The VPC, nat-gateway, and nat-instance submodules are based off of
+  Cloudposse's  [vpc](https://github.com/cloudposse/terraform-aws-vpc)  and
+  [dynamic-subnets](https://github.com/cloudposse/terraform-aws-dynamic-subnets)
+  modules.
 
 # How to use this project
 usage: |-
