@@ -78,51 +78,53 @@ modules.
 
 
 **IMPORTANT:** The `master` branch is used in `source` just as an example. In your code, do not pin to `master` because there may be breaking changes between releases.
-Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/releases).
+Instead pin to the release tag (e.g. `?ref=tags/x.y.z`) of one of our [latest releases](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/-/tags).
 
 
-
-The tag below is not up to date. Check the repo for the latest version.
 
 ```hcl
 module "vpc" {
-  source  = "git::https://gitlab.com/guardianproject-ops/terraform-aws-vpc?ref=tags/0.1.0"
+  source  = "git::https://gitlab.com/guardianproject-ops/terraform-aws-vpc?ref=master"
 
   context = module.this.context
 
   cidr_block = "10.0.0.0/16"
   subnets = [
       {
-        type = "public_1"
+        name = "public_1"
         availability_zone = "eu-central-1a"
         cidr_block = "10.0.0.0/24"
         public_route_enabled = true
         nat_instance_enabled = false
         nat_gateway_enabled = false
+        nat_public_name = ""
       },
       {
-        type = "private_1"
+        name = "private_1"
         availability_zone = "eu-central-1a"
         cidr_block = "10.0.1.0/24"
         public_route_enabled = false
         nat_instance_enabled = true
         nat_gateway_enabled = false
+        nat_public_name = "public_1"
       },
       {
-        type = "private_2"
+        name = "private_2"
         availability_zone = "eu-central-1b"
         cidr_block = "10.0.2.0/24"
         public_route_enabled = false
         nat_instance_enabled = false
         nat_gateway_enabled = true
+        nat_public_name = "public_1"
       },
       {
-        type = "rds_1"
+        name = "rds_1"
         availability_zone = "eu-central-1a"
         cidr_block = "10.0.3.0/24"
         public_route_enabled = false
         nat_instance_enabled = false
         nat_gateway_enabled = false
+        nat_public_name = ""
       }
     ]
 }
@@ -145,6 +147,7 @@ module "vpc" {
 |------|-------------|------|---------|:-----:|
 | additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| availability\_zones | The availability zones to create resources in | `list(string)` | n/a | yes |
 | aws\_route\_create\_timeout | Time to wait for AWS route creation specifed as a Go Duration, e.g. `2m` | `string` | `"2m"` | no |
 | aws\_route\_delete\_timeout | Time to wait for AWS route deletion specifed as a Go Duration, e.g. `5m` | `string` | `"5m"` | no |
 | cidr\_block | Base CIDR block which will be divided into subnet CIDR blocks (e.g. `10.0.0.0/16`) | `string` | n/a | yes |
@@ -156,18 +159,22 @@ module "vpc" {
 | label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | n/a | yes |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | n/a | yes |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | n/a | yes |
+| nat\_gateways | Map where key is the AZ and value is the name of the subnet in which to place a NAT Gateway in this AZ. | `map(string)` | n/a | yes |
 | nat\_instance\_type | NAT Instance type | `string` | `"t3.micro"` | no |
+| nat\_instances | Map where key is the AZ and value is the name of the subnet in which to place a NAT Instance in this AZ. | `map(string)` | n/a | yes |
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | n/a | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | n/a | yes |
-| subnets | A list of maps describing the subnets to create. | <pre>list(object({<br>    type                 = string<br>    availability_zone    = string<br>    cidr_block           = string<br>    public_route_enabled = bool<br>    nat_instance_enabled = bool<br>    nat_gateway_enabled  = bool<br>  }))</pre> | n/a | yes |
+| subnets | A list of maps describing the subnets to create. | <pre>map(map(object({<br>    cidr_block           = string<br>    public_route_enabled = bool<br>  })))</pre> | n/a | yes |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| availability\_zones | n/a |
 | nat\_gateways | n/a |
 | nat\_instances | n/a |
+| private\_route\_tables | n/a |
 | private\_subnets | n/a |
 | public\_subnets | n/a |
 | ssh\_security\_group\_id | n/a |
@@ -223,7 +230,7 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 Copyright © 2020-2020 [The Guardian Project](https://guardianproject.info)
 
-Copyright © 2017-2020-2020 [Cloud Posse, LLC](https://cloudposse.com)
+Copyright © 2017-2020 [Cloud Posse, LLC](https://cloudposse.com)
 
 
 

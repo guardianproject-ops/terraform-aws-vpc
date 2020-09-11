@@ -13,7 +13,7 @@ output "availability_zone" {
 }
 
 output "subnet_id" {
-  value = var.subnet_id
+  value = var.public_subnet_id
 }
 
 output "vpc_id" {

@@ -94,7 +94,7 @@ resource "aws_instance" "nat_instance" {
   count                  = var.enabled ? 1 : 0
   ami                    = data.aws_ami.nat_instance.id
   instance_type          = var.nat_instance_type
-  subnet_id              = var.subnet_id
+  subnet_id              = var.public_subnet_id
   vpc_security_group_ids = [aws_security_group.nat_instance[0].id]
   iam_instance_profile   = aws_iam_instance_profile.ssm[0].id
 

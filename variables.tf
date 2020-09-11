@@ -3,16 +3,27 @@ variable "cidr_block" {
   description = "Base CIDR block which will be divided into subnet CIDR blocks (e.g. `10.0.0.0/16`)"
 }
 
+variable "availability_zones" {
+  type        = list(string)
+  description = "The availability zones to create resources in"
+}
+
+variable "nat_gateways" {
+  type        = map(string)
+  description = "Map where key is the AZ and value is the name of the subnet in which to place a NAT Gateway in this AZ."
+}
+
+variable "nat_instances" {
+  type        = map(string)
+  description = "Map where key is the AZ and value is the name of the subnet in which to place a NAT Instance in this AZ."
+}
+
 variable "subnets" {
   description = "A list of maps describing the subnets to create."
-  type = list(object({
-    type                 = string
-    availability_zone    = string
+  type = map(map(object({
     cidr_block           = string
     public_route_enabled = bool
-    nat_instance_enabled = bool
-    nat_gateway_enabled  = bool
-  }))
+  })))
 }
 
 variable "nat_instance_type" {

@@ -32,47 +32,49 @@ introduction: |-
 # How to use this project
 usage: |-
 
-  The tag below is not up to date. Check the repo for the latest version.
-
   ```hcl
   module "vpc" {
-    source  = "git::https://gitlab.com/guardianproject-ops/terraform-aws-vpc?ref=tags/0.1.0"
+    source  = "git::https://gitlab.com/guardianproject-ops/terraform-aws-vpc?ref=master"
 
     context = module.this.context
 
     cidr_block = "10.0.0.0/16"
     subnets = [
         {
-          type = "public_1"
+          name = "public_1"
           availability_zone = "eu-central-1a"
           cidr_block = "10.0.0.0/24"
           public_route_enabled = true
           nat_instance_enabled = false
           nat_gateway_enabled = false
+          nat_public_name = ""
         },
         {
-          type = "private_1"
+          name = "private_1"
           availability_zone = "eu-central-1a"
           cidr_block = "10.0.1.0/24"
           public_route_enabled = false
           nat_instance_enabled = true
           nat_gateway_enabled = false
+          nat_public_name = "public_1"
         },
         {
-          type = "private_2"
+          name = "private_2"
           availability_zone = "eu-central-1b"
           cidr_block = "10.0.2.0/24"
           public_route_enabled = false
           nat_instance_enabled = false
           nat_gateway_enabled = true
+          nat_public_name = "public_1"
         },
         {
-          type = "rds_1"
+          name = "rds_1"
           availability_zone = "eu-central-1a"
           cidr_block = "10.0.3.0/24"
           public_route_enabled = false
           nat_instance_enabled = false
           nat_gateway_enabled = false
+          nat_public_name = ""
         }
       ]
   }
@@ -90,7 +92,7 @@ copyrights:
     year: "2020"
   - name: "Cloud Posse, LLC"
     url: "https://cloudposse.com"
-    year: "2017-2020"
+    year: "2017"
 
 # Contributors to this project
 contributors:

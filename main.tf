@@ -6,15 +6,12 @@ module "vpc" {
 }
 
 locals {
-  public_subnets_list  = [for n in var.subnets : n if n.public_route_enabled]
-  public_subnets       = { for n in local.public_subnets_list : n.type => n }
-  private_subnets_list = [for n in var.subnets : n if ! n.public_route_enabled]
-  private_subnets      = { for n in local.private_subnets_list : n.type => n }
-}
+  public_subnets_list = flatten([for az in keys(var.subnets) : [for name, s in var.subnets[az] : merge({ "name" : name, "az" : az }, s) if s.public_route_enabled]])
+  public_subnets      = { for n in local.public_subnets_list : n.name => n }
 
-data "aws_availability_zones" "available" {
+  private_subnets_list = flatten([for az in keys(var.subnets) : [for name, s in var.subnets[az] : merge({ "name" : name, "az" : az }, s) if ! s.public_route_enabled]])
+  private_subnets      = { for n in local.private_subnets_list : n.name => n }
 }
-
 
 # handy security group we export
 resource "aws_security_group" "sg_allow_ssh" {

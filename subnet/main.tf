@@ -1,6 +1,6 @@
 module "subnet_label" {
   source     = "git::https://github.com/cloudposse/terraform-null-label.git?ref=tags/0.19.2"
-  attributes = [var.type]
+  attributes = [var.subnet_name]
   tags       = { "Visibility" = var.public_route_enabled ? "public" : "private" }
   context    = module.this.context
 }
@@ -28,19 +28,13 @@ resource "aws_subnet" "subnet" {
   )
 
   lifecycle {
-    ignore_changes = [tags.kubernetes, tags.SubnetType]
+    ignore_changes = [tags.Visibility]
   }
-}
-
-resource "aws_route_table" "subnet" {
-  vpc_id = var.vpc_id
-
-  tags = module.subnet_label.tags
 }
 
 resource "aws_route" "public" {
   count                  = var.public_route_enabled ? 1 : 0
-  route_table_id         = aws_route_table.subnet.id
+  route_table_id         = var.route_table_id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = var.igw_id
 
@@ -52,6 +46,6 @@ resource "aws_route" "public" {
 
 resource "aws_route_table_association" "subnet" {
   subnet_id      = aws_subnet.subnet.id
-  route_table_id = aws_route_table.subnet.id
+  route_table_id = var.route_table_id
 }
 

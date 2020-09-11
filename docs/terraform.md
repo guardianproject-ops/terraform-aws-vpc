@@ -10,6 +10,7 @@
 |------|-------------|------|---------|:-----:|
 | additional\_tag\_map | Additional tags for appending to tags\_as\_list\_of\_maps. Not added to `tags`. | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
+| availability\_zones | The availability zones to create resources in | `list(string)` | n/a | yes |
 | aws\_route\_create\_timeout | Time to wait for AWS route creation specifed as a Go Duration, e.g. `2m` | `string` | `"2m"` | no |
 | aws\_route\_delete\_timeout | Time to wait for AWS route deletion specifed as a Go Duration, e.g. `5m` | `string` | `"5m"` | no |
 | cidr\_block | Base CIDR block which will be divided into subnet CIDR blocks (e.g. `10.0.0.0/16`) | `string` | n/a | yes |
@@ -21,18 +22,22 @@
 | label\_order | The naming order of the id output and Name tag.<br>Defaults to ["namespace", "environment", "stage", "name", "attributes"].<br>You can omit any of the 5 elements, but at least one must be present. | `list(string)` | n/a | yes |
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | n/a | yes |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | n/a | yes |
+| nat\_gateways | Map where key is the AZ and value is the name of the subnet in which to place a NAT Gateway in this AZ. | `map(string)` | n/a | yes |
 | nat\_instance\_type | NAT Instance type | `string` | `"t3.micro"` | no |
+| nat\_instances | Map where key is the AZ and value is the name of the subnet in which to place a NAT Instance in this AZ. | `map(string)` | n/a | yes |
 | regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`.<br>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | n/a | yes |
 | stage | Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release' | `string` | n/a | yes |
-| subnets | A list of maps describing the subnets to create. | <pre>list(object({<br>    type                 = string<br>    availability_zone    = string<br>    cidr_block           = string<br>    public_route_enabled = bool<br>    nat_instance_enabled = bool<br>    nat_gateway_enabled  = bool<br>  }))</pre> | n/a | yes |
+| subnets | A list of maps describing the subnets to create. | <pre>map(map(object({<br>    cidr_block           = string<br>    public_route_enabled = bool<br>  })))</pre> | n/a | yes |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+| availability\_zones | n/a |
 | nat\_gateways | n/a |
 | nat\_instances | n/a |
+| private\_route\_tables | n/a |
 | private\_subnets | n/a |
 | public\_subnets | n/a |
 | ssh\_security\_group\_id | n/a |

@@ -35,6 +35,6 @@ variable "cidr_block" {
   description = "Base CIDR block which will be divided into subnet CIDR blocks (e.g. `10.0.0.0/16`)"
 }
 
-variable "subnet_id" {
+variable "public_subnet_id" {
   type = string
 }

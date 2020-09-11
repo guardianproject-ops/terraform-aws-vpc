@@ -28,7 +28,7 @@ resource "aws_nat_gateway" "nat" {
   }
 }
 
-resource "aws_route" "nat" {
+resource "aws_route" "nat_ipv4" {
   count                  = var.enabled ? 1 : 0
   route_table_id         = var.private_route_table_id
   nat_gateway_id         = aws_nat_gateway.nat[0].id
@@ -39,3 +39,14 @@ resource "aws_route" "nat" {
     delete = var.aws_route_delete_timeout
   }
 }
+#resource "aws_route" "nat_ipv6" {
+#  count                       = var.enabled ? 1 : 0
+#  route_table_id              = var.private_route_table_id
+#  nat_gateway_id              = aws_nat_gateway.nat[0].id
+#  destination_ipv6_cidr_block = "::/0"
+#
+#  timeouts {
+#    create = var.aws_route_create_timeout
+#    delete = var.aws_route_delete_timeout
+#  }
+#}

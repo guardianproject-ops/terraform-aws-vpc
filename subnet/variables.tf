@@ -11,9 +11,9 @@ variable "subnet_cidr_block" {
 variable "availability_zone" {
   type = string
 }
-variable "type" {
+variable "subnet_name" {
   type        = string
-  description = "The type of subnet, e.g, public, private, rds"
+  description = "The name of subnet, e.g, public, private, rds"
 }
 variable "public_route_enabled" {
   type        = bool
@@ -31,4 +31,7 @@ variable "aws_route_delete_timeout" {
   type        = string
   default     = "5m"
   description = "Time to wait for AWS route deletion specifed as a Go Duration, e.g. `5m`"
+}
+variable "route_table_id" {
+  type = string
 }
