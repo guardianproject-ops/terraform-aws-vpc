@@ -56,6 +56,37 @@ data "aws_ami" "nat_instance" {
   owners = ["amazon"]
 }
 
+# create an SSM-enabled EC2 instance profile
+data "aws_iam_policy_document" "assume_ec2_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "ssm" {
+  count              = var.enabled ? 1 : 0
+  name               = module.nat_instance_label.id
+  assume_role_policy = data.aws_iam_policy_document.assume_ec2_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "ssm" {
+  count      = var.enabled ? 1 : 0
+  role       = aws_iam_role.ssm[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+
+resource "aws_iam_instance_profile" "ssm" {
+  count = var.enabled ? 1 : 0
+  name  = module.nat_instance_label.id
+  role  = aws_iam_role.ssm[0].name
+}
+
 // https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html
 // https://docs.aws.amazon.com/vpc/latest/userguide/VPC_NAT_Instance.html
 // https://dzone.com/articles/nat-instance-vs-nat-gateway
@@ -65,6 +96,7 @@ resource "aws_instance" "nat_instance" {
   instance_type          = var.nat_instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [aws_security_group.nat_instance[0].id]
+  iam_instance_profile   = aws_iam_instance_profile.ssm[0].id
 
   tags = merge(
     module.nat_instance_label.tags,
