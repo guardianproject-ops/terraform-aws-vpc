@@ -34,50 +34,48 @@ usage: |-
 
   ```hcl
   module "vpc" {
-    source  = "git::https://gitlab.com/guardianproject-ops/terraform-aws-vpc?ref=master"
+    source = "git::https://gitlab.com/guardianproject-ops/terraform-aws-vpc?ref=master"
 
-    context = module.this.context
+    cidr_block               = "10.55.0.0/16"
+    nat_instance_type        = "t3.micro"
 
-    cidr_block = "10.0.0.0/16"
-    subnets = [
-        {
-          name = "public_1"
-          availability_zone = "eu-central-1a"
-          cidr_block = "10.0.0.0/24"
-          public_route_enabled = true
-          nat_instance_enabled = false
-          nat_gateway_enabled = false
-          nat_public_name = ""
-        },
-        {
-          name = "private_1"
-          availability_zone = "eu-central-1a"
-          cidr_block = "10.0.1.0/24"
-          public_route_enabled = false
-          nat_instance_enabled = true
-          nat_gateway_enabled = false
-          nat_public_name = "public_1"
-        },
-        {
-          name = "private_2"
-          availability_zone = "eu-central-1b"
-          cidr_block = "10.0.2.0/24"
-          public_route_enabled = false
-          nat_instance_enabled = false
-          nat_gateway_enabled = true
-          nat_public_name = "public_1"
-        },
-        {
-          name = "rds_1"
-          availability_zone = "eu-central-1a"
-          cidr_block = "10.0.3.0/24"
-          public_route_enabled = false
-          nat_instance_enabled = false
-          nat_gateway_enabled = false
-          nat_public_name = ""
+    availability_zones = ["eu-central-1a", "eu-central-1b"]
+    nat_gateways       = { "eu-central-1a" = "public_1" }
+    nat_instances      = { "eu-central-1a" = "public_2" }
+
+    subnets = {
+      "eu-central-1a" = {
+        "public_1" = {
+          "cidr_block"           = cidrsubnet(var.cidr_block, 8, 0)
+          "public_route_enabled" = true
         }
-      ]
+        "private_1" = {
+          "cidr_block"           = cidrsubnet(var.cidr_block, 8, 1)
+          "public_route_enabled" = false
+        }
+        "rds_1" = {
+          "cidr_block"           = cidrsubnet(var.cidr_block, 8, 2)
+          "public_route_enabled" = false
+        }
+      }
+      "eu-central-1b" = {
+        "public_2" = {
+          "cidr_block"           = cidrsubnet(var.cidr_block, 8, 3)
+          "public_route_enabled" = true
+        }
+        "private_2" = {
+          "cidr_block"           = cidrsubnet(var.cidr_block, 8, 4)
+          "public_route_enabled" = false
+        }
+        "rds_2" = {
+          "cidr_block"           = cidrsubnet(var.cidr_block, 8, 5)
+          "public_route_enabled" = false
+        }
+      }
+    }
+    context = module.this.context
   }
+
   ```
 
 related: []
