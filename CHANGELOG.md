@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.2.0...0.2.1) (2020-09-18)
+
+
+### Bug Fixes
+
+* proper naming and tagging of NAT instances ([ad79435](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/commit/ad7943564e24104e72953ef63758ab0c0b9050ce))
+
 ## [0.2.0](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.1.0...0.2.0) (2020-09-11)
 
 
