@@ -100,18 +100,7 @@ resource "aws_instance" "nat_instance" {
 
   tags = merge(
     module.nat_instance_label.tags,
-    {
-      "Name" = format(
-        "%s%s%s",
-        module.nat_instance_label.id,
-        module.this.delimiter,
-        replace(
-          var.availability_zone,
-          "-",
-          module.this.delimiter
-        )
-      )
-    }
+    { "Application" : "nat-instance" }
   )
 
   # Required by NAT
@@ -128,22 +117,8 @@ resource "aws_instance" "nat_instance" {
 resource "aws_eip" "nat_instance" {
   count = var.enabled ? 1 : 0
 
-  vpc = true
-  tags = merge(
-    module.nat_instance_label.tags,
-    {
-      "Name" = format(
-        "%s%s%s",
-        module.nat_instance_label.id,
-        module.this.delimiter,
-        replace(
-          var.availability_zone,
-          "-",
-          module.this.delimiter
-        )
-      )
-    }
-  )
+  vpc  = true
+  tags = module.nat_instance_label.tags
 
   lifecycle {
     create_before_destroy = true
