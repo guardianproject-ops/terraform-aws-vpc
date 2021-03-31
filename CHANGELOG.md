@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.2.1...0.2.2) (2021-03-31)
+
+
+### Bug Fixes
+
+* update null-label to 0.24.1 ([49c13e0](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/commit/49c13e0fddfb3d29c6be66818720d04572ac3ba3))
+
 ### [0.2.1](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.2.0...0.2.1) (2020-09-18)
 
 
