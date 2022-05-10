@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.2.2...0.2.3) (2022-05-10)
+
+
+### Bug Fixes
+
+* Ensure ami change doesn't recreate instance ([d030211](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/commit/d030211da00fe89fb37474f2934555255bc1695e))
+
+### [0.2.3](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.2.2...0.2.3) (2022-05-10)
+
+
+### Bug Fixes
+
+* Ensure ami change doesn't recreate instance ([d030211](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/commit/d030211da00fe89fb37474f2934555255bc1695e))
+
 ### [0.2.2](https://gitlab.com/guardianproject-ops/terraform-aws-vpc/compare/0.2.1...0.2.2) (2021-03-31)
 
 
